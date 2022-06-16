@@ -30,18 +30,21 @@ function App() {
 
     let observer = new MutationObserver((mutationRecords) => {
       console.log(mutationRecords);
-      if (mutationRecords[0].addedNodes.length > 0) {
+      let mut = mutationRecords[0];
+      let sibling = mut.previousSibling || mut.nextSibling;
+      if (sibling && mut.addedNodes.length > 0 && sibling.id === mut.addedNodes[0].id) {
         // let addedElem = mutationRecords[0].addedNodes[0];
         // console.log(addedElem); // console.log(изменения)
         // console.log(addedElem.innerHTML);
         // addedElem.innerHTML = addedElem.innerText;
         // console.log(addedElem.innerHTML);
+        mut.addedNodes[0].id = 'changedId_' + generateId();
         let elemId = generateId();
-        let mut = mutationRecords[0];
-        addElem(mut.previousSibling.id, elemId, mut.addedNodes[0].innerHTML);
+
+        addElem(sibling.id, elemId, mut.addedNodes[0].innerHTML);
 
         console.log(
-          mut.previousSibling.id,
+          sibling.id,
           elemId,
           mut.addedNodes[0].innerHTML
         );
