@@ -38,18 +38,25 @@ function App() {
       // console.log('sibling.id: ', sibling.id);
       // console.log('mut.addedNodes[0].id: ', mut.addedNodes[0].id);
       if (sibling && mut.addedNodes.length > 0 && sibling.id === mut.addedNodes[0].id) {
-        // let addedElem = mutationRecords[0].addedNodes[0];
+        let addedElem = mutationRecords[0].addedNodes[0];
+        let parent = mut.target;
+        let div = document.createElement("div");
+        div.id = generateId();
+        div.innerHTML = addedElem.innerHTML;
+        parent.replaceChild(div, addedElem);
+
+
         // console.log(addedElem); // console.log(изменения)
         // console.log(addedElem.innerHTML);
         // addedElem.innerHTML = addedElem.innerText;
         // console.log(addedElem.innerHTML);
         // mut.addedNodes[0].id = 'changedId_' + generateId() + '_n' + counter.current;
         // counter.current = counter.current + 1;
-        let elemId = generateId();
-        // mut.addedNodes[0].id = elemId;
-        let innerhtml = mut.addedNodes[0].innerHTML;
-        appElem.removeChild(mut.addedNodes[0]);
-        addElem(sibling.id, elemId, innerhtml);
+
+        // let elemId = generateId();
+        // let innerhtml = mut.addedNodes[0].innerHTML;
+        // appElem.removeChild(mut.addedNodes[0]);
+        // addElem(sibling.id, elemId, innerhtml);
 
         console.log(
           sibling.id,
