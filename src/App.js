@@ -24,6 +24,19 @@ function App() {
     });
   };
 
+  let replaceToDiv = (replaceableElem, parentElem) => {
+    console.log('Replce elements:');
+    console.log({
+      replaceableElem
+    });
+    let div = document.createElement("div");
+    div.id = generateId();
+    div.contentEditable = true;
+    div.innerHTML = replaceableElem.innerHTML;
+    parentElem.replaceChild(div, replaceableElem);
+    div.focus();
+  };
+
   let counter = useRef(0);
 
 
@@ -34,16 +47,33 @@ function App() {
       console.log(mutationRecords);
       let mut = mutationRecords[0];
       let sibling = mut.previousSibling || mut.nextSibling;
+
+
+
       console.log(' ');
       // console.log('sibling.id: ', sibling.id);
       // console.log('mut.addedNodes[0].id: ', mut.addedNodes[0].id);
-      if (sibling && mut.addedNodes.length > 0 && sibling.id === mut.addedNodes[0].id) {
+      if (mut.addedNodes.length > 0) {
+        let prevSibling = mut.previousSibling;
+        let nextSibling = mut.nextSibling;
         let addedElem = mutationRecords[0].addedNodes[0];
         let parent = mut.target;
-        let div = document.createElement("div");
-        div.id = generateId();
-        div.innerHTML = addedElem.innerHTML;
-        parent.replaceChild(div, addedElem);
+
+        if (prevSibling && prevSibling.id === addedElem.id) {
+          replaceToDiv(addedElem, parent);
+        };
+
+        if (nextSibling && nextSibling.id === addedElem.id) {
+          if(addedElem.innerText.trim() !== ''){
+            // console.log('addedElem.innerText.length: ', addedElem.innerText.trim().length);
+            replaceToDiv(nextSibling, parent);
+          } else {
+            replaceToDiv(addedElem, parent);
+          };
+        };
+
+
+
 
 
         // console.log(addedElem); // console.log(изменения)
